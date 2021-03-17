@@ -9,6 +9,7 @@ export class GqlConfigService implements GqlOptionsFactory {
       playground: true,
       autoSchemaFile: true,
       sortSchema: true,
+      installSubscriptionHandlers: true,
     };
   }
 }
