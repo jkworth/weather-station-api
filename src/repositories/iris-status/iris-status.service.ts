@@ -1,24 +1,16 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { ServiceBase } from '../repository-base/service-base.abstract';
 import { IrisStatusWhereArgs } from './iris-status-where.args';
 import { IrisStatus } from './iris-status.entity';
 
 @Injectable()
-export class IrisStatusService {
-  private readonly logger = new Logger(IrisStatus.name);
-
+export class IrisStatusService extends ServiceBase<IrisStatus, IrisStatusWhereArgs> {
   constructor(
     @InjectRepository(IrisStatus)
-    private irisStatusRepository: Repository<IrisStatus>,
-  ) {}
-
-  async findAll(where: IrisStatusWhereArgs[]): Promise<IrisStatus[]> {
-    const dbQueryCriteria: FindManyOptions<IrisStatus> = {
-      where,
-      order: { timestamp: 'DESC' },
-    };
-    this.logger.log(`Entity table was searched with args: ${JSON.stringify(dbQueryCriteria)}`);
-    return this.irisStatusRepository.find(dbQueryCriteria);
+    repository: Repository<IrisStatus>,
+  ) {
+    super(repository, IrisStatus.name);
   }
 }

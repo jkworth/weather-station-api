@@ -1,24 +1,16 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { ServiceBase } from '../repository-base/service-base.abstract';
 import { AccessStatusWhereArgs } from './access-status-where.args';
 import { AccessStatus } from './access-status.entity';
 
 @Injectable()
-export class AccessStatusService {
-  private readonly logger = new Logger(AccessStatus.name);
-
+export class AccessStatusService extends ServiceBase<AccessStatus, AccessStatusWhereArgs> {
   constructor(
     @InjectRepository(AccessStatus)
-    private accessStatusRepository: Repository<AccessStatus>,
-  ) {}
-
-  async findAll(where: AccessStatusWhereArgs[]): Promise<AccessStatus[]> {
-    const dbQueryCriteria: FindManyOptions<AccessStatus> = {
-      where,
-      order: { timestamp: 'DESC' },
-    };
-    this.logger.log(`Entity table was searched with args: ${JSON.stringify(dbQueryCriteria)}`);
-    return this.accessStatusRepository.find(dbQueryCriteria);
+    repository: Repository<AccessStatus>,
+  ) {
+    super(repository, AccessStatus.name);
   }
 }

@@ -13,6 +13,6 @@ export class LightningDataResolver {
     @Args('where', { nullable: true, type: () => [LightningDatumWhereArgs] }, ShapeWherePipe)
     where?: LightningDatumWhereArgs[],
   ): Promise<LightningDatum[]> {
-    return this.lightningDataService.findAll(where);
+    return this.lightningDataService.findAll(where, 'lastStrikeTimeStamp');
   }
 }

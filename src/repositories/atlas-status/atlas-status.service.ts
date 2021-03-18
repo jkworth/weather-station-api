@@ -1,24 +1,16 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { ServiceBase } from '../repository-base/service-base.abstract';
 import { AtlasStatusWhereArgs } from './atlas-status-where.args';
 import { AtlasStatus } from './atlas-status.entity';
 
 @Injectable()
-export class AtlasStatusService {
-  private readonly logger = new Logger(AtlasStatus.name);
-
+export class AtlasStatusService extends ServiceBase<AtlasStatus, AtlasStatusWhereArgs> {
   constructor(
     @InjectRepository(AtlasStatus)
-    private atlasStatusRepository: Repository<AtlasStatus>,
-  ) {}
-
-  async findAll(where: AtlasStatusWhereArgs[]): Promise<AtlasStatus[]> {
-    const dbQueryCriteria: FindManyOptions<AtlasStatus> = {
-      where,
-      order: { timestamp: 'DESC' },
-    };
-    this.logger.log(`Entity table was searched with args: ${JSON.stringify(dbQueryCriteria)}`);
-    return this.atlasStatusRepository.find(dbQueryCriteria);
+    repository: Repository<AtlasStatus>,
+  ) {
+    super(repository, AtlasStatus.name);
   }
 }

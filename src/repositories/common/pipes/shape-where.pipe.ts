@@ -3,9 +3,9 @@ import { Equal, ILike, In, IsNull, LessThan, LessThanOrEqual, Like, MoreThan, Mo
 
 @Injectable()
 export class ShapeWherePipe implements PipeTransform {
-  transform(where: any[]) {
-    if (where?.length) {
-      return this.shapeWhere(where);
+  transform(wheres: any[]) {
+    if (wheres?.length) {
+      return this.shapeWhere(wheres.map((where) => ({ ...where })));
     }
   }
 
@@ -14,8 +14,9 @@ export class ShapeWherePipe implements PipeTransform {
    * @param whereClauseArray
    */
   shapeWhere = (whereClauseOptions: any[]): any[] => {
-    return whereClauseOptions.map((whereClause) => {
+    const mappedOptions = whereClauseOptions.map((whereClause) => {
       for (const field in whereClause) {
+        whereClause[field] = { ...whereClause[field] };
         if (whereClause[field]['In']) {
           whereClause[field] = In(whereClause[field]['In']);
         }
@@ -56,5 +57,7 @@ export class ShapeWherePipe implements PipeTransform {
 
       return whereClause;
     });
+
+    return mappedOptions;
   };
 }

@@ -1,24 +1,16 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { ServiceBase } from '../repository-base/service-base.abstract';
 import { RainWhereArgs } from './rain-where.args';
 import { Rain } from './rain.entity';
 
 @Injectable()
-export class RainService {
-  private readonly logger = new Logger(Rain.name);
-
+export class RainService extends ServiceBase<Rain, RainWhereArgs> {
   constructor(
     @InjectRepository(Rain)
-    private rainRepository: Repository<Rain>,
-  ) {}
-
-  async findAll(where: RainWhereArgs[]): Promise<Rain[]> {
-    const dbQueryCriteria: FindManyOptions<Rain> = {
-      where,
-      order: { timestamp: 'DESC' },
-    };
-    this.logger.log(`Entity table was searched with args: ${JSON.stringify(dbQueryCriteria)}`);
-    return this.rainRepository.find(dbQueryCriteria);
+    repository: Repository<Rain>,
+  ) {
+    super(repository, Rain.name);
   }
 }

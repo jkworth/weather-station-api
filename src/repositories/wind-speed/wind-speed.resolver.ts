@@ -13,6 +13,6 @@ export class WindSpeedResolver {
     @Args('where', { nullable: true, type: () => [WindSpeedWhereArgs] }, ShapeWherePipe)
     where?: WindSpeedWhereArgs[],
   ): Promise<WindSpeed[]> {
-    return this.windSpeedService.findAll(where);
+    return await this.windSpeedService.findAll(where);
   }
 }

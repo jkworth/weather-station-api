@@ -1,24 +1,16 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { ServiceBase } from '../repository-base/service-base.abstract';
 import { WindDirectionWhereArgs } from './wind-direction-where.args';
 import { WindDirection } from './wind-direction.entity';
 
 @Injectable()
-export class WindDirectionService {
-  private readonly logger = new Logger(WindDirection.name);
-
+export class WindDirectionService extends ServiceBase<WindDirection, WindDirectionWhereArgs> {
   constructor(
     @InjectRepository(WindDirection)
-    private windDirectionRepository: Repository<WindDirection>,
-  ) {}
-
-  async findAll(where: WindDirectionWhereArgs[]): Promise<WindDirection[]> {
-    const dbQueryCriteria: FindManyOptions<WindDirection> = {
-      where,
-      order: { timestamp: 'DESC' },
-    };
-    this.logger.log(`Entity table was searched with args: ${JSON.stringify(dbQueryCriteria)}`);
-    return this.windDirectionRepository.find(dbQueryCriteria);
+    repository: Repository<WindDirection>,
+  ) {
+    super(repository, WindDirection.name);
   }
 }

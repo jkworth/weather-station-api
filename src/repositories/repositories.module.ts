@@ -12,6 +12,7 @@ import { LightModule } from './light/light.module';
 import { LightningDataModule } from './lightning-data/lightning-data.module';
 import { PressureModule } from './pressure/pressure.module';
 import { RainfallModule } from './rainfall/rain.module';
+import { RepositoryBaseModule } from './repository-base/repository-base.module';
 import { TemperatureModule } from './temperature/temperature.module';
 import { UVIndexModule } from './u-v-index/u-v-index.module';
 import { WindDirectionModule } from './wind-direction/wind-direction.module';
@@ -36,6 +37,7 @@ import { WindSpeedModule } from './wind-speed/wind-speed.module';
     UVIndexModule,
     WindDirectionModule,
     WindSpeedModule,
+    RepositoryBaseModule,
   ],
 })
 export class RepositoriesModule {}

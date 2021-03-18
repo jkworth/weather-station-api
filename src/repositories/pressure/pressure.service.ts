@@ -1,24 +1,16 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { ServiceBase } from '../repository-base/service-base.abstract';
 import { PressureWhereArgs } from './pressure-where.args';
 import { Pressure } from './pressure.entity';
 
 @Injectable()
-export class PressureService {
-  private readonly logger = new Logger(Pressure.name);
-
+export class PressureService extends ServiceBase<Pressure, PressureWhereArgs> {
   constructor(
     @InjectRepository(Pressure)
-    private pressureRepository: Repository<Pressure>,
-  ) {}
-
-  async findAll(where: PressureWhereArgs[]): Promise<Pressure[]> {
-    const dbQueryCriteria: FindManyOptions<Pressure> = {
-      where,
-      order: { timestamp: 'DESC' },
-    };
-    this.logger.log(`Entity table was searched with args: ${JSON.stringify(dbQueryCriteria)}`);
-    return this.pressureRepository.find(dbQueryCriteria);
+    repository: Repository<Pressure>,
+  ) {
+    super(repository, Pressure.name);
   }
 }
