@@ -20,7 +20,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       autoLoadEntities: true,
-      timezone: 'Z',
+      // timezone: 'Z',
     };
   }
 }
