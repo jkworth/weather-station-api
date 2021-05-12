@@ -23,14 +23,19 @@ export abstract class ServiceBase<T, TWA> {
 
   async findAll(where: TWA[]): Promise<T[]> {
     const order = {};
-    order[this.defaultOrderByColumn] = 'DESC';
-    const dbQueryCriteria: FindManyOptions<T> = {
-      where,
-      order,
-    };
+    order[this.defaultOrderByColumn] = 'ASC';
+
+    const dbQueryCriteria: FindManyOptions<T> = { where, order };
 
     this.logger.log(`Entity table was searched with args: ${JSON.stringify(dbQueryCriteria)}`);
     return this.repository.find(dbQueryCriteria);
+  }
+
+  async findAllForLast24Hours(): Promise<T[]> {
+    const date = new Date();
+    date.setDate(date.getDate() - 1);
+
+    return this.findAll([{ timestamp: MoreThan(date) } as any]);
   }
 
   getSubscription(): AsyncIterator<T> {
@@ -40,12 +45,14 @@ export abstract class ServiceBase<T, TWA> {
   async findSince(date: Date): Promise<T[]> {
     const order = {};
     order[this.defaultOrderByColumn] = 'ASC';
+
     const where = {};
     where[this.defaultFilterByColumn] = MoreThan(date);
-    return this.repository.find({
-      where,
-      order,
-    });
+
+    const dbQueryCriteria: FindManyOptions<T> = { where, order };
+
+    // this.logger.log(`Entity table was searched with args: ${JSON.stringify(dbQueryCriteria)}`);
+    return this.repository.find(dbQueryCriteria);
   }
 
   private async pollForNewData(): Promise<void> {

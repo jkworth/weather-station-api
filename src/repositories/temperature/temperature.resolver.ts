@@ -1,6 +1,4 @@
-import { Args, Query, Resolver, Subscription } from '@nestjs/graphql';
-import { ShapeWherePipe } from 'src/repositories/common/pipes/shape-where.pipe';
-import { TemperatureWhereArgs } from './temperature-where.args';
+import { Query, Resolver, Subscription } from '@nestjs/graphql';
 import { Temperature } from './temperature.entity';
 import { TemperatureService } from './temperature.service';
 
@@ -8,12 +6,9 @@ import { TemperatureService } from './temperature.service';
 export class TemperatureResolver {
   constructor(private service: TemperatureService) {}
 
-  @Query(() => [Temperature], { name: 'temperatures' })
-  async getTemperatures(
-    @Args('where', { nullable: true, type: () => [TemperatureWhereArgs] }, ShapeWherePipe)
-    where?: TemperatureWhereArgs[],
-  ): Promise<Temperature[]> {
-    return this.service.findAll(where);
+  @Query(() => [Temperature], { name: 'temperaturesForLast24Hours' })
+  async getTemperaturesForLast24Hours(): Promise<Temperature[]> {
+    return this.service.findAllForLast24Hours();
   }
 
   @Subscription(() => Temperature)
