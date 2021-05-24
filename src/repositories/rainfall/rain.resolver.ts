@@ -1,6 +1,4 @@
-import { Args, Query, Resolver, Subscription } from '@nestjs/graphql';
-import { ShapeWherePipe } from 'src/repositories/common/pipes/shape-where.pipe';
-import { RainWhereArgs } from './rain-where.args';
+import { Query, Resolver, Subscription } from '@nestjs/graphql';
 import { Rain } from './rain.entity';
 import { RainService } from './rain.service';
 
@@ -8,12 +6,9 @@ import { RainService } from './rain.service';
 export class RainResolver {
   constructor(private service: RainService) {}
 
-  @Query(() => [Rain], { name: 'rain' })
-  async getRain(
-    @Args('where', { nullable: true, type: () => [RainWhereArgs] }, ShapeWherePipe)
-    where?: RainWhereArgs[],
-  ): Promise<Rain[]> {
-    return this.service.findAll(where);
+  @Query(() => [Rain])
+  async rainForLast24Hours(): Promise<Rain[]> {
+    return this.service.findAllForLast24Hours();
   }
 
   @Subscription(() => Rain)

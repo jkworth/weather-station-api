@@ -1,6 +1,4 @@
-import { Args, Query, Resolver, Subscription } from '@nestjs/graphql';
-import { ShapeWherePipe } from '../common/pipes/shape-where.pipe';
-import { LightWhereArgs } from './light-where.args';
+import { Query, Resolver, Subscription } from '@nestjs/graphql';
 import { Light } from './light.entity';
 import { LightService } from './light.service';
 
@@ -8,12 +6,9 @@ import { LightService } from './light.service';
 export class LightResolver {
   constructor(private service: LightService) {}
 
-  @Query(() => [Light], { name: 'lights' })
-  async getHumidities(
-    @Args('where', { nullable: true, type: () => [LightWhereArgs] }, ShapeWherePipe)
-    where?: LightWhereArgs[],
-  ): Promise<Light[]> {
-    return this.service.findAll(where);
+  @Query(() => [Light])
+  async lightForLast24Hours(): Promise<Light[]> {
+    return this.service.findAllForLast24Hours();
   }
 
   @Subscription(() => Light)

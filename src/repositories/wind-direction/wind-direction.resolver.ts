@@ -1,6 +1,4 @@
-import { Args, Query, Resolver, Subscription } from '@nestjs/graphql';
-import { ShapeWherePipe } from 'src/repositories/common/pipes/shape-where.pipe';
-import { WindDirectionWhereArgs } from './wind-direction-where.args';
+import { Query, Resolver, Subscription } from '@nestjs/graphql';
 import { WindDirection } from './wind-direction.entity';
 import { WindDirectionService } from './wind-direction.service';
 
@@ -8,12 +6,9 @@ import { WindDirectionService } from './wind-direction.service';
 export class WindDirectionResolver {
   constructor(private service: WindDirectionService) {}
 
-  @Query(() => [WindDirection], { name: 'windDirections' })
-  async getWindDirections(
-    @Args('where', { nullable: true, type: () => [WindDirectionWhereArgs] }, ShapeWherePipe)
-    where?: WindDirectionWhereArgs[],
-  ): Promise<WindDirection[]> {
-    return this.service.findAll(where);
+  @Query(() => [WindDirection])
+  async windDirectionForLast24Hours(): Promise<WindDirection[]> {
+    return this.service.findAllForLast24Hours();
   }
 
   @Subscription(() => WindDirection)

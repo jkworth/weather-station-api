@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @ObjectType()
 @Entity({ name: 'uvindex' })
-export class UVIndex {
+export class UvIndex {
   @Field()
   @PrimaryColumn({ type: 'timestamp' })
   timestamp: Date;

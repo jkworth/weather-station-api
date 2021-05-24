@@ -1,23 +1,18 @@
-import { Args, Query, Resolver, Subscription } from '@nestjs/graphql';
-import { ShapeWherePipe } from 'src/repositories/common/pipes/shape-where.pipe';
-import { UVIndexWhereArgs } from './u-v-index-where.args';
-import { UVIndex } from './u-v-index.entity';
+import { Query, Resolver, Subscription } from '@nestjs/graphql';
+import { UvIndex } from './u-v-index.entity';
 import { UVIndexService } from './u-v-index.service';
 
-@Resolver(() => UVIndex)
+@Resolver(() => UvIndex)
 export class UVIndexResolver {
   constructor(private service: UVIndexService) {}
 
-  @Query(() => [UVIndex], { name: 'uvIndexes' })
-  async getUVIndexes(
-    @Args('where', { nullable: true, type: () => [UVIndexWhereArgs] }, ShapeWherePipe)
-    where?: UVIndexWhereArgs[],
-  ): Promise<UVIndex[]> {
-    return this.service.findAll(where);
+  @Query(() => [UvIndex])
+  async uvIndexForLast24Hours(): Promise<UvIndex[]> {
+    return this.service.findAllForLast24Hours();
   }
 
-  @Subscription(() => UVIndex)
-  newUVIndexAdded(): AsyncIterator<UVIndex> {
+  @Subscription(() => UvIndex)
+  newUvIndexAdded(): AsyncIterator<UvIndex> {
     return this.service.getSubscription();
   }
 }

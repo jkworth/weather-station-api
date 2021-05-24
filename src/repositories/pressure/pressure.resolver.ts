@@ -1,6 +1,4 @@
-import { Args, Query, Resolver, Subscription } from '@nestjs/graphql';
-import { ShapeWherePipe } from 'src/repositories/common/pipes/shape-where.pipe';
-import { PressureWhereArgs } from './pressure-where.args';
+import { Query, Resolver, Subscription } from '@nestjs/graphql';
 import { Pressure } from './pressure.entity';
 import { PressureService } from './pressure.service';
 
@@ -8,12 +6,9 @@ import { PressureService } from './pressure.service';
 export class PressureResolver {
   constructor(private service: PressureService) {}
 
-  @Query(() => [Pressure], { name: 'pressures' })
-  async getPressures(
-    @Args('where', { nullable: true, type: () => [PressureWhereArgs] }, ShapeWherePipe)
-    where?: PressureWhereArgs[],
-  ): Promise<Pressure[]> {
-    return this.service.findAll(where);
+  @Query(() => [Pressure])
+  async pressureForLast24Hours(): Promise<Pressure[]> {
+    return this.service.findAllForLast24Hours();
   }
 
   @Subscription(() => Pressure)

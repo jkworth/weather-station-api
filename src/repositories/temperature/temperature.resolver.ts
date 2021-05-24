@@ -6,8 +6,8 @@ import { TemperatureService } from './temperature.service';
 export class TemperatureResolver {
   constructor(private service: TemperatureService) {}
 
-  @Query(() => [Temperature], { name: 'temperaturesForLast24Hours' })
-  async getTemperaturesForLast24Hours(): Promise<Temperature[]> {
+  @Query(() => [Temperature])
+  async temperatureForLast24Hours(): Promise<Temperature[]> {
     return this.service.findAllForLast24Hours();
   }
 
