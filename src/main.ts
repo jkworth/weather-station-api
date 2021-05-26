@@ -15,6 +15,7 @@ async function bootstrap() {
     },
     httpsOptions,
   });
+
   await app.listen(3443, '0.0.0.0');
 }
 bootstrap();
