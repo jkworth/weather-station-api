@@ -24,7 +24,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule, {
     cors: {
-      origin: ['http://localhost:4200', 'https://weather-station-ui.web.app'],
+      origin: ['http://localhost:4200', 'https://weather-station-ui-a49d1.web.app'],
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     },
     httpsOptions,
