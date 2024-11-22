@@ -11,15 +11,9 @@ async function bootstrap() {
     throw new Error('No .env variables found');
   }
 
-  let { CERT_DIR, KEY_DIR, API_PORT } = dotenvResults.parsed;
-
-  KEY_DIR = KEY_DIR ?? '.';
-  CERT_DIR = CERT_DIR ?? '.';
-  API_PORT = API_PORT ?? '3443';
-
   const httpsOptions = {
-    key: readFileSync(KEY_DIR + '/key.pem'),
-    cert: readFileSync(CERT_DIR + '/cert.pem'),
+    key: readFileSync((process.env.KEY_DIR ?? '.') + '/key.pem'),
+    cert: readFileSync((process.env.CERT_DIR ?? '.') + '/cert.pem'),
   };
 
   const app = await NestFactory.create(AppModule, {
@@ -30,6 +24,6 @@ async function bootstrap() {
     httpsOptions,
   });
 
-  await app.listen(API_PORT, '0.0.0.0');
+  await app.listen(process.env.API_PORT, '0.0.0.0');
 }
 bootstrap();
