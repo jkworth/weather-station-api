@@ -2,7 +2,6 @@ name: weather-station-api build and publish image
 
 on:
   push:
-    branches: ['main']
     tags:
       - 'v*'
 
