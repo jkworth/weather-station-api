@@ -2,8 +2,8 @@ name: weather-station-api build and publish image
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches: ['main']
+    tags: ['v*']
 
 env:
   REGISTRY: ghcr.io

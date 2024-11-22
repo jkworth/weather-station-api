@@ -9,6 +9,7 @@ RUN npm ci
 COPY . .
 
 RUN npm run build
+RUN touch .env
 
 EXPOSE 3443
 
