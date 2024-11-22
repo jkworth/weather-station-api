@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+.vscode/
+.idea/
+.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+Dockerfile
+docker-compose.yml
+docker-compose.override.yml
+.gitignore
+.gitattributes
+.prettierrc
+.eslintrc
